@@ -58,11 +58,12 @@ class MovieAdapter(ctx: Context) : BaseAdapter(), Filterable {
     inner class MovieFilter: Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             var filterResults = FilterResults()
+            var apiRequest = APIRequest()
 
             if (constraint != null && constraint.isNotEmpty()) {
-                var tmpList: ArrayList<ItemFilm> = ArrayList()
-
                 var constraint0 = constraint.toString().toLowerCase()
+                var tmpList: ArrayList<ItemFilm> = apiRequest.getSearchMovie(constraint0)
+
                 for (itemFilm in ItemFilm.allItems) {
                     if (itemFilm.name.toLowerCase().contains(constraint0)) {   //add description
                         tmpList.add(itemFilm)

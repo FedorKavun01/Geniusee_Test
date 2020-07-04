@@ -15,15 +15,19 @@ data class ItemFilm(var id: Long, var name: String, var description: String, var
 
     companion object {
         var allItems: ArrayList<ItemFilm> = ArrayList()
+        var searchItems: ArrayList<ItemFilm> = ArrayList()
 
         fun findItem(id: Long): ItemFilm? {
-            return allItems.find { it.id == id }
+            var item = allItems.find { it.id == id }
+            if (item == null) {
+                item = searchItems.find { it.id == id }
+            }
+            return item
         }
     }
 
     init {
         posterURL = "https://image.tmdb.org/t/p/w500$posterURL"
-        allItems.add(this)
     }
 
 

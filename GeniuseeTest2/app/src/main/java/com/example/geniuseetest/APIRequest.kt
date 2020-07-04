@@ -10,30 +10,16 @@ class APIRequest : Runnable {
     val address: String = "https://api.themoviedb.org/3"
     val trending: String = "trending"
     val mediaType: String = "movie"
+    val search: String = "search"
     var timeWindow: String = "day"
+    var page: Int = 1
     var request = ""
     var thread = Thread(this)
     var result = ""
 
     fun getTrendsJSON(): Unit {
         request = "$address/$trending/$mediaType/$timeWindow?api_key=$API_KEY"
-        thread.start()
-        thread.join()
-        Log.d("mytag", "getTrendsJSON: " + result)
-        var jsonObject: JSONObject = JSONObject(result)
-        var films = jsonObject.optJSONArray("results").let { 0.until(it.length()).map { i -> it.optJSONObject(i) } }
-        Log.d("mytag", "getTrendsJSON: " + films)
-        for (film in films) {
-            jsonObject = JSONObject(film.toString())
-            val id = jsonObject.optLong("id")
-            val name = jsonObject.optString("title")
-            val description = jsonObject.optString("overview")
-            val poster = jsonObject.optString("poster_path")
-
-            ItemFilm(id, name, description, poster)
-
-            Log.d("mytag", "getTrendsJSON: " + id + " " + name + "\n " + description + "\n" + poster)
-        }
+        ItemFilm.allItems.addAll(JSONToItemFilmList())
     }
 
     fun getDetails(id: Long, itemFilm: ItemFilm?): DetailMovie {
@@ -50,6 +36,38 @@ class APIRequest : Runnable {
         val directors = getName(directorsList)
 
         return DetailMovie(itemFilm, genres, releaseDate, directors)
+    }
+
+    fun getSearchMovie(query: String): ArrayList<ItemFilm> {
+        request = "$address/$search/$mediaType?api_key=$API_KEY&query=$query&page=$page"
+        if (page == 1) {
+            ItemFilm.searchItems.clear()
+        }
+        ItemFilm.searchItems.addAll(JSONToItemFilmList())
+        return ItemFilm.searchItems
+    }
+
+    private fun JSONToItemFilmList(): ArrayList<ItemFilm> {
+        var itemsList: ArrayList<ItemFilm> = ArrayList()
+        thread.start()
+        thread.join()
+        Log.d("mytag", "getTrendsJSON: " + result)
+        var jsonObject: JSONObject = JSONObject(result)
+        var films = jsonObject.optJSONArray("results").let { 0.until(it.length()).map { i -> it.optJSONObject(i) } }
+        Log.d("mytag", "getTrendsJSON: " + films)
+        for (film in films) {
+            jsonObject = JSONObject(film.toString())
+            val id = jsonObject.optLong("id")
+            val name = jsonObject.optString("title")
+            val description = jsonObject.optString("overview")
+            val poster = jsonObject.optString("poster_path")
+
+            itemsList.add(ItemFilm(id, name, description, poster))
+
+
+            Log.d("mytag", "getTrendsJSON: " + id + " " + name + "\n " + description + "\n" + poster)
+        }
+        return itemsList
     }
 
     fun getName(items: List<String>) : String {
