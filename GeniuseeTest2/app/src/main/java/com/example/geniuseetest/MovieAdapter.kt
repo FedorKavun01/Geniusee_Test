@@ -41,7 +41,7 @@ class MovieAdapter(ctx: Context) : BaseAdapter(), Filterable {
     }
 
     override fun getItemId(position: Int): Long {
-        return filteredList.get(position).id.toLong()
+        return filteredList.get(position).id
     }
 
     override fun getCount(): Int {

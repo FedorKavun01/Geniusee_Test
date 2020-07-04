@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">GeniuseeTest</string>
     <string name="hint">Search movie</string>
+    <string name="title">Title</string>
+    <string name="release_date">Release date</string>
+    <string name="genres">Genres</string>
+    <string name="cast">Cast</string>
+    <string name="description">Description</string>
+    <string name="directors">Directors</string>
 </resources>

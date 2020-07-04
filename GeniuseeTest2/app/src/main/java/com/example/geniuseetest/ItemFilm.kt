@@ -9,17 +9,20 @@ import java.io.InputStream
 import java.lang.Exception
 import java.net.URL
 
-data class ItemFilm(var id: String, var name: String, var description: String, var posterURL: String) {
+data class ItemFilm(var id: Long, var name: String, var description: String, var posterURL: String) {
 
     var poster: Bitmap? = null
 
     companion object {
         var allItems: ArrayList<ItemFilm> = ArrayList()
+
+        fun findItem(id: Long): ItemFilm? {
+            return allItems.find { it.id == id }
+        }
     }
 
     init {
         posterURL = "https://image.tmdb.org/t/p/w500$posterURL"
-//        ImageBitmapGetter().execute(posterURL)
         allItems.add(this)
     }
 

@@ -2,11 +2,14 @@ package com.example.geniuseetest
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.ListView
 
@@ -29,6 +32,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         movieLV = findViewById(R.id.movieLV)
         mAdapter = MovieAdapter(this)
         movieLV.adapter = mAdapter
+        movieLV.setOnItemClickListener(AdapterView.OnItemClickListener { parent, view, position, id ->
+            var intent = Intent(this, DetailActivity().javaClass)
+            intent.putExtra("id", id)
+            startActivity(intent)
+            Log.d("tagID", "onCreate: " + id)
+         })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
