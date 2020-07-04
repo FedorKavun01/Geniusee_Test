@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import org.w3c.dom.Text
 
 class MovieAdapter(ctx: Context) : BaseAdapter(), Filterable {
 
@@ -32,6 +33,7 @@ class MovieAdapter(ctx: Context) : BaseAdapter(), Filterable {
 
         view.findViewById<TextView>(R.id.tvName).setText(filmItem.name)
         view.findViewById<TextView>(R.id.tvShortDescription).setText(filmItem.description)
+        Log.d("mytesttag", "getView: " + (view.findViewById(R.id.tvShortDescription) as TextView).text)
 
         return view
     }
@@ -63,12 +65,6 @@ class MovieAdapter(ctx: Context) : BaseAdapter(), Filterable {
             if (constraint != null && constraint.isNotEmpty()) {
                 var constraint0 = constraint.toString().toLowerCase()
                 var tmpList: ArrayList<ItemFilm> = apiRequest.getSearchMovie(constraint0)
-
-                for (itemFilm in ItemFilm.allItems) {
-                    if (itemFilm.name.toLowerCase().contains(constraint0)) {   //add description
-                        tmpList.add(itemFilm)
-                    }
-                }
 
                 filterResults.count = tmpList.size
                 filterResults.values = tmpList

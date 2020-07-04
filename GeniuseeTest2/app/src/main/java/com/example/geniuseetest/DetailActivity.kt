@@ -1,6 +1,7 @@
 package com.example.geniuseetest
 
 import android.os.Bundle
+import android.view.Menu
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -13,6 +14,7 @@ class DetailActivity : AppCompatActivity() {
     lateinit var tvReleasedDate: TextView
     lateinit var tvFullDescription: TextView
     lateinit var tvDirectors: TextView
+    lateinit var name: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,5 +42,13 @@ class DetailActivity : AppCompatActivity() {
         tvReleasedDate.setText(detailMovie.releaseDate)
         tvFullDescription.setText(detailMovie.description)
         tvDirectors.setText(detailMovie.directors)
+
+        name = detailMovie.name.toString()
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        title = name
+        return super.onCreateOptionsMenu(menu)
     }
 }

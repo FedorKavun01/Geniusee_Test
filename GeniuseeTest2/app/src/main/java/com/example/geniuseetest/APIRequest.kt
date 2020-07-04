@@ -11,14 +11,16 @@ class APIRequest : Runnable {
     val trending: String = "trending"
     val mediaType: String = "movie"
     val search: String = "search"
-    var timeWindow: String = "day"
     var page: Int = 1
     var request = ""
     var thread = Thread(this)
     var result = ""
 
-    fun getTrendsJSON(): Unit {
-        request = "$address/$trending/$mediaType/$timeWindow?api_key=$API_KEY"
+    fun getTrendsJSON(timeWindow: String): Unit {
+        request = "$address/$trending/$mediaType/$timeWindow?api_key=$API_KEY&page=$page"
+        if (page == 1) {
+            ItemFilm.allItems.clear()
+        }
         ItemFilm.allItems.addAll(JSONToItemFilmList())
     }
 
@@ -62,7 +64,7 @@ class APIRequest : Runnable {
             val description = jsonObject.optString("overview")
             val poster = jsonObject.optString("poster_path")
 
-            itemsList.add(ItemFilm(id, name, description, poster))
+            itemsList.add(ItemFilm(id, name, "\t$description", poster))
 
 
             Log.d("mytag", "getTrendsJSON: " + id + " " + name + "\n " + description + "\n" + poster)
@@ -77,6 +79,7 @@ class APIRequest : Runnable {
             val name = jsonObject.optString("name")
             result += "$name\n"
         }
+        result = result.removeRange(result.length - 1, result.length)
         return result
     }
 

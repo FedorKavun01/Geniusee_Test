@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        APIRequest().getTrendsJSON()
+        APIRequest().getTrendsJSON("day")
         movieLV = findViewById(R.id.movieLV)
         mAdapter = MovieAdapter(this)
         movieLV.adapter = mAdapter
@@ -50,7 +50,25 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 //        searchView.isSubmitButtonEnabled = true
         searchView.setOnQueryTextListener(this)
 
+        menu.add(0, 0, 0, "Day")
+        menu.add(0, 1, 0, "Week")
+
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var apiRequest: APIRequest = APIRequest()
+        when (item.itemId){
+            0 -> {
+                apiRequest.getTrendsJSON("day")
+                mAdapter.notifyDataSetChanged()
+            }
+            1 -> {
+                apiRequest.getTrendsJSON("week")
+                mAdapter.notifyDataSetChanged()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
