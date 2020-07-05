@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     var apiRequestAim = "trends"
     lateinit var movieLV : ListView
     lateinit var mAdapter: MovieAdapter
-//    lateinit var apiRequest: APIRequest
 
     companion object {
         lateinit var apiRequest: APIRequest
