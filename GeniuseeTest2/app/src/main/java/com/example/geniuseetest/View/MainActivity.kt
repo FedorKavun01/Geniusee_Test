@@ -1,4 +1,4 @@
-package com.example.geniuseetest
+package com.example.geniuseetest.View
 
 import android.app.SearchManager
 import android.content.Context
@@ -8,16 +8,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.AdapterView
-import android.widget.ImageView
 import android.widget.ListView
 
-import android.widget.SimpleAdapter
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.get
-import androidx.core.view.size
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.geniuseetest.Controllers.APIRequest
+import com.example.geniuseetest.Controllers.MovieAdapter
+import com.example.geniuseetest.R
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
@@ -57,7 +54,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        var apiRequest: APIRequest = APIRequest()
+        var apiRequest: APIRequest =
+            APIRequest()
         when (item.itemId){
             0 -> {
                 apiRequest.getTrendsJSON("day")

@@ -1,4 +1,4 @@
-package com.example.geniuseetest
+package com.example.geniuseetest.Models
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

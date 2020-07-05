@@ -1,6 +1,4 @@
-package com.example.geniuseetest
-
-import android.graphics.Bitmap
+package com.example.geniuseetest.Models
 
 data class DetailMovie(var itemFilm: ItemFilm?, var genres: String, var releaseDate: String, var directors: String) {
     var poster = itemFilm?.poster

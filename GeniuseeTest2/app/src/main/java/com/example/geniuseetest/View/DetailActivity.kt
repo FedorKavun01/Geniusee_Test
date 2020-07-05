@@ -1,4 +1,4 @@
-package com.example.geniuseetest
+package com.example.geniuseetest.View
 
 import android.os.Bundle
 import android.view.Menu
@@ -6,6 +6,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.geniuseetest.Controllers.APIRequest
+import com.example.geniuseetest.Models.ItemFilm
+import com.example.geniuseetest.R
 
 class DetailActivity : AppCompatActivity() {
 
@@ -29,7 +32,8 @@ class DetailActivity : AppCompatActivity() {
             Toast.makeText(this, "ERROR WITH ID", Toast.LENGTH_LONG).show()
             this.finish()
         }
-        var detailMovie = APIRequest().getDetails(id, itemFilm)
+        var detailMovie = APIRequest()
+            .getDetails(id, itemFilm)
 
         ivDetailPoster = findViewById(R.id.ivMovieDetailPoster)
         tvGenres = findViewById(R.id.tvGenres)

@@ -1,14 +1,14 @@
-package com.example.geniuseetest
+package com.example.geniuseetest.Controllers
 
 import android.app.Service
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import org.w3c.dom.Text
+import com.example.geniuseetest.Models.ItemFilm
+import com.example.geniuseetest.R
 
 class MovieAdapter(ctx: Context) : BaseAdapter(), Filterable {
 
@@ -58,9 +58,11 @@ class MovieAdapter(ctx: Context) : BaseAdapter(), Filterable {
     }
 
     inner class MovieFilter: Filter() {
+
+        var apiRequest = APIRequest()
+
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             var filterResults = FilterResults()
-            var apiRequest = APIRequest()
 
             if (constraint != null && constraint.isNotEmpty()) {
                 var constraint0 = constraint.toString().toLowerCase()

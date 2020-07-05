@@ -1,6 +1,8 @@
-package com.example.geniuseetest
+package com.example.geniuseetest.Controllers
 
 import android.util.Log
+import com.example.geniuseetest.Models.DetailMovie
+import com.example.geniuseetest.Models.ItemFilm
 import org.json.JSONObject
 import java.net.URL
 
@@ -37,7 +39,12 @@ class APIRequest : Runnable {
         val genres = getName(genresList)
         val directors = getName(directorsList)
 
-        return DetailMovie(itemFilm, genres, releaseDate, directors)
+        return DetailMovie(
+            itemFilm,
+            genres,
+            releaseDate,
+            directors
+        )
     }
 
     fun getSearchMovie(query: String): ArrayList<ItemFilm> {
@@ -50,6 +57,7 @@ class APIRequest : Runnable {
     }
 
     private fun JSONToItemFilmList(): ArrayList<ItemFilm> {
+        thread = Thread(this)
         var itemsList: ArrayList<ItemFilm> = ArrayList()
         thread.start()
         thread.join()
@@ -65,7 +73,6 @@ class APIRequest : Runnable {
             val poster = jsonObject.optString("poster_path")
 
             itemsList.add(ItemFilm(id, name, "\t$description", poster))
-
 
             Log.d("mytag", "getTrendsJSON: " + id + " " + name + "\n " + description + "\n" + poster)
         }
@@ -87,4 +94,5 @@ class APIRequest : Runnable {
         var url = URL(request)
         result = url.readText()
     }
+
 }
