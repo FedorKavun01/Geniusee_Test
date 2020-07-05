@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.AdapterView
@@ -14,18 +13,22 @@ import android.widget.ListView
 import androidx.appcompat.widget.SearchView
 import com.example.geniuseetest.Controllers.APIRequest
 import com.example.geniuseetest.Controllers.MovieAdapter
+import com.example.geniuseetest.Controllers.MyScrollListener
 import com.example.geniuseetest.R
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
+    var apiRequestAim = "trends"
     lateinit var movieLV : ListView
     lateinit var mAdapter: MovieAdapter
+    lateinit var apiRequest: APIRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        APIRequest().getTrendsJSON("day")
+        apiRequest = APIRequest(apiRequestAim)
+        apiRequest.getTrendsJSON()
         movieLV = findViewById(R.id.movieLV)
         mAdapter = MovieAdapter(this)
         movieLV.adapter = mAdapter
@@ -33,10 +36,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             var intent = Intent(this, DetailActivity().javaClass)
             intent.putExtra("id", id)
             startActivity(intent)
-            Log.d("tagID", "onCreate: " + id)
          })
+
+        movieLV.setOnScrollListener(MyScrollListener())
     }
 
+    //Add SearchView and Menu to select time
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.options_menu, menu)
         var searchManager: SearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -44,7 +49,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         searchView.queryHint = "Type something here..."
         searchView.apply { setSearchableInfo(searchManager.getSearchableInfo(componentName)) }
 
-//        searchView.isSubmitButtonEnabled = true
         searchView.setOnQueryTextListener(this)
 
         menu.add(0, 0, 0, "Day")
@@ -54,15 +58,16 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        var apiRequest: APIRequest =
-            APIRequest()
+        apiRequest = APIRequest(apiRequestAim)
         when (item.itemId){
             0 -> {
-                apiRequest.getTrendsJSON("day")
+                APIRequest.timeWindow = "day"
+                apiRequest.getTrendsJSON()
                 mAdapter.notifyDataSetChanged()
             }
             1 -> {
-                apiRequest.getTrendsJSON("week")
+                APIRequest.timeWindow = "week"
+                apiRequest.getTrendsJSON()
                 mAdapter.notifyDataSetChanged()
             }
         }

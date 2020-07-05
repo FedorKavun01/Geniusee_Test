@@ -12,6 +12,7 @@ import com.example.geniuseetest.R
 
 class MovieAdapter(ctx: Context) : BaseAdapter(), Filterable {
 
+    val apiRequestAim = "search"
     var layoutInflater: LayoutInflater = ctx.getSystemService(Service.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     var movieFilter: MovieFilter? = null
     var filteredList: ArrayList<ItemFilm> = ItemFilm.allItems
@@ -33,7 +34,7 @@ class MovieAdapter(ctx: Context) : BaseAdapter(), Filterable {
 
         view.findViewById<TextView>(R.id.tvName).setText(filmItem.name)
         view.findViewById<TextView>(R.id.tvShortDescription).setText(filmItem.description)
-        Log.d("mytesttag", "getView: " + (view.findViewById(R.id.tvShortDescription) as TextView).text)
+
 
         return view
     }
@@ -57,16 +58,19 @@ class MovieAdapter(ctx: Context) : BaseAdapter(), Filterable {
         return movieFilter as MovieFilter
     }
 
+    //Inner class of filter to search
+    //Sends api request to get list of results
     inner class MovieFilter: Filter() {
 
-        var apiRequest = APIRequest()
+        var apiRequest = APIRequest(apiRequestAim)
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             var filterResults = FilterResults()
-
+            apiRequest = APIRequest(apiRequestAim)
             if (constraint != null && constraint.isNotEmpty()) {
                 var constraint0 = constraint.toString().toLowerCase()
-                var tmpList: ArrayList<ItemFilm> = apiRequest.getSearchMovie(constraint0)
+                apiRequest.query = constraint0
+                var tmpList: ArrayList<ItemFilm> = apiRequest.getSearchMovie()
 
                 filterResults.count = tmpList.size
                 filterResults.values = tmpList

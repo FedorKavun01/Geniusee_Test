@@ -25,14 +25,15 @@ class DetailActivity : AppCompatActivity() {
         fillActivity()
     }
 
-    fun fillActivity(): Unit {
+    //Get all data and fill views
+    private fun fillActivity(): Unit {
         val id: Long = intent.extras?.get("id") as Long
         val itemFilm = ItemFilm.findItem(id)
         if(itemFilm == null) {
             Toast.makeText(this, "ERROR WITH ID", Toast.LENGTH_LONG).show()
             this.finish()
         }
-        var detailMovie = APIRequest()
+        var detailMovie = APIRequest("detail")
             .getDetails(id, itemFilm)
 
         ivDetailPoster = findViewById(R.id.ivMovieDetailPoster)

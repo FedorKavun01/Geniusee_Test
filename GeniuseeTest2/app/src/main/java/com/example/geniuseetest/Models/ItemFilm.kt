@@ -9,14 +9,18 @@ import java.io.InputStream
 import java.lang.Exception
 import java.net.URL
 
+//Item of ListView
 data class ItemFilm(var id: Long, var name: String, var description: String, var posterURL: String) {
 
     var poster: Bitmap? = null
 
     companion object {
+        //List of trends
         var allItems: ArrayList<ItemFilm> = ArrayList()
+        //List of search results
         var searchItems: ArrayList<ItemFilm> = ArrayList()
 
+        //Fun to get object by id
         fun findItem(id: Long): ItemFilm? {
             var item = allItems.find { it.id == id }
             if (item == null) {
@@ -26,11 +30,12 @@ data class ItemFilm(var id: Long, var name: String, var description: String, var
         }
     }
 
+    //Get full posterURL
     init {
         posterURL = "https://image.tmdb.org/t/p/w500$posterURL"
     }
 
-
+    //Get Bitmap from URL in AsyncTask
     class ImageBitmapGetter2(var imgView: ImageView, var item: ItemFilm) : AsyncTask<String, Void, Bitmap?>() {
 
         override fun doInBackground(vararg params: String?): Bitmap? {
@@ -40,7 +45,7 @@ data class ItemFilm(var id: Long, var name: String, var description: String, var
                 val inputStream: InputStream = URL(url).openStream()
                 bitmap = BitmapFactory.decodeStream(inputStream)
             } catch (e: Exception) {
-                Log.d("mytage", "doInBackground: " + e)
+                Log.e("myEror", "doInBackground: " + e)
             }
             return bitmap
         }
@@ -51,24 +56,4 @@ data class ItemFilm(var id: Long, var name: String, var description: String, var
             item.poster = result
         }
     }
-
-
-//    inner class ImageBitmapGetter : AsyncTask<String, Void, Bitmap?>() {
-//        override fun doInBackground(vararg params: String?): Bitmap? {
-//            var url = params[0]
-//            var bitmap: Bitmap? = null
-//            try {
-//                val inputStream: InputStream = URL(url).openStream()
-//                bitmap = BitmapFactory.decodeStream(inputStream)
-//            } catch (e: Exception) {
-//                Log.d("mytage", "doInBackground: " + e)
-//            }
-//            return bitmap
-//        }
-//
-//        override fun onPostExecute(result: Bitmap?) {
-//            super.onPostExecute(result)
-//            poster = result
-//        }
-//    }
 }
